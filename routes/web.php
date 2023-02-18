@@ -40,6 +40,9 @@ Route::middleware('auth')->group(function () {
 // Middleware handled in controller.
 Route::prefix('game')->group(function () {
     Route::post('/store', [GameController::class, 'store'])->name('game.store');
+
+    // TODO: payment gateway
+    Route::post('/register', [GameController::class, 'register'])->name('game.register');
 });
 
 Route::middleware('auth')->prefix('step')->group(function () {
