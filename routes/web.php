@@ -37,7 +37,8 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::middleware('auth')->prefix('game')->group(function () {
+// Middleware handled in controller.
+Route::prefix('game')->group(function () {
     Route::post('/store', [GameController::class, 'store'])->name('game.store');
 });
 
