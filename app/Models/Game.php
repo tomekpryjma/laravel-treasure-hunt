@@ -22,4 +22,9 @@ class Game extends Model
     {
         return $this->hasMany(Step::class);
     }
+
+    public function gameSessions(): HasMany
+    {
+        return $this->hasMany(GameSession::class);
+    }
 }
