@@ -18,7 +18,9 @@ class GameController extends Controller
             'title' => ['required', 'string', 'max:255'],
         ]);
 
-        if (Game::create(['title' => $request->input('title')])) {
+        $game = new Game(['title' => $request->input('title')]);
+
+        if ($request->user()->games()->save($game)) {
             return response()->json(['message' => 'Game created!'], 201);
         }
     }
