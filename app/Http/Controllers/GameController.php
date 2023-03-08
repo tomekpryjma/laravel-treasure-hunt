@@ -41,6 +41,11 @@ class GameController extends Controller
         // TODO: once payment gateway is in, ensure no money gets taken if this errors.
         DB::transaction(function () use ($game) {
             // Create game session
+            /**
+             * Generate 1 access code for game session.
+             *   - It can then be shared between players.
+             *   - 
+             */
             $game->gameSessions()->save(
                 new GameSession([
                     'session_code' => UniqueUuid::generate((new GameSession)->getTable(), 'session_code'),
