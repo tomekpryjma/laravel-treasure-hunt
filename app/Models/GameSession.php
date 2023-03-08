@@ -11,6 +11,8 @@ class GameSession extends Model
 {
     use HasFactory;
 
+    protected $fillable = ['session_code'];
+
     public function game(): BelongsTo
     {
         return $this->belongsTo(Game::class);
