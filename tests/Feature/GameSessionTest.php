@@ -14,7 +14,7 @@ class GameSessionTest extends TestCase
 {
     use RefreshDatabase, WithFaker;
 
-    public function test_game_session_gets_lobbies_and_players()
+    public function test_game_session_registration()
     {
         $user = User::factory()->create();
 
@@ -58,24 +58,25 @@ class GameSessionTest extends TestCase
             'emails' => $playerEmails,
             'game_id' => $user->games()->first()->id,
         ]);
-        $response->assertStatus(200);
+        $response->assertStatus(201);
 
-        // test mail out
+        // TODO: test mail out
 
         // Test DB refreshes after each test case, should only be 3 players.
         $players = Player::all();
 
         $gameSession = GameSession::where('game_id', $user->games()->first()->id)->first();
         $this->assertNotNull($gameSession);
-        $this->assertNotEmpty($gameSession->session_id);
+        $this->assertNotEmpty($gameSession->session_code);
+        $this->assertNotEmpty($gameSession->access_code);
         $this->assertFalse($gameSession->in_progress);
         $this->assertNull($gameSession->completed_at);
-        $this->assertNotEquals(0, $gameSession->game()->steps()->count());
-        $this->assertEquals(count($playerEmails), $gameSession->lobbies()->count());
-
+        $this->assertNotEquals(0, $gameSession->game->steps()->count());
         $this->assertEquals(count($playerEmails), $players->count());
+
         foreach ($players as $player) {
-            $this->assertEquals($gameSession->id, $player->lobby->gameSession->id);
+            $this->assertEquals($gameSession->id, $player->gameSession->id);
+            $this->assertContains($player->email, $playerEmails);
         }
     }
 }
