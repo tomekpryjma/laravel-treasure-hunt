@@ -2,9 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Helpers\UniqueUuid;
+use App\Helpers\Unique;
 use App\Models\Game;
 use App\Models\GameSession;
+use App\Models\Player;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -37,31 +38,42 @@ class GameController extends Controller
         ]);
 
         $game = Game::find($request->input('game_id'));
+        $gameSessionCreated = false;
 
         // TODO: once payment gateway is in, ensure no money gets taken if this errors.
-        DB::transaction(function () use ($game) {
-            // Create game session
-            /**
-             * Generate 1 access code for game session.
-             *   - It can then be shared between players.
-             *   - 
-             */
+        DB::transaction(function () use ($game, $request, &$gameSessionCreated) {
+            $tableName = (new GameSession)->getTable();
+            $sessionCode = Unique::uuid($tableName, 'session_code');
             $game->gameSessions()->save(
                 new GameSession([
-                    'session_code' => UniqueUuid::generate((new GameSession)->getTable(), 'session_code'),
+                    'session_code' => $sessionCode,
+                    'access_code' => Unique::number($tableName, 'access_code'),
                 ])
             );
 
-            // Create players
-            // TODO: Generate unique access_code
-            // TODO: Think about how to prevent 1 access code being shared despite there being a limit to players.
             /**
-             * Can use logic in UniqueUuid class for the access code.
-             * 
-             * If im planning on using websockets, maybe there's a way to check amount of connections. If there are more than total players, dont allow access?
+             * Registering user will input emails of the other players.
+             * The email will be used with the game session access code to authenticate players
+             * into the game session.
+             * An email should be sent to all entered emails.
              */
+            $gameSession = GameSession::where('session_code', $sessionCode)->first();
+            $players = [];
 
-            // Create lobbies
+            foreach ($request->input('emails') as $email) {
+                $players[] = new Player([
+                    'email' => $email,
+                ]);
+            }
+
+            $gameSession->players()->saveMany($players);
+            $gameSessionCreated = true;
         });
+
+        if ($gameSessionCreated) {
+            return response()->json([
+                'message' => 'Thank you for registering for this game!',
+            ], 201);
+        }
     }
 }

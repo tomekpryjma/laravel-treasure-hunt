@@ -4,20 +4,22 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Database\Eloquent\Relations\HasOneThrough;
 
 class Player extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['email'];
 
     public function lobby(): HasOne
     {
         return $this->hasOne(GameLobby::class);
     }
 
-    public function gameSession(): HasOneThrough
+    public function gameSession(): BelongsTo
     {
-        return $this->hasOneThrough(GameSession::class, GameLobby::class);
+        return $this->belongsTo(GameSession::class);
     }
 }

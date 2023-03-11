@@ -11,15 +11,19 @@ class GameSession extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['session_code'];
+    protected $fillable = ['session_code', 'access_code'];
+
+    protected $casts = [
+        'in_progress' => 'boolean',
+    ];
 
     public function game(): BelongsTo
     {
         return $this->belongsTo(Game::class);
     }
 
-    public function lobbies(): HasMany
+    public function players(): HasMany
     {
-        return $this->hasMany(GameLobby::class);
+        return $this->hasMany(Player::class);
     }
 }

@@ -15,8 +15,8 @@ return new class extends Migration
     {
         Schema::create('players', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->mediumInteger('access_code')->unique();
+            $table->string('email');
+            $table->foreignId('game_session_id')->constrained();
             $table->timestamps();
         });
     }
