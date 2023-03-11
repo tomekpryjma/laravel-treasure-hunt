@@ -7,9 +7,9 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Tests\TestCase;
-use App\Helpers\UniqueUuid;
+use App\Helpers\Unique;
 
-class UniqueUuidTest extends TestCase
+class UniqueTest extends TestCase
 {
     use RefreshDatabase;
 
@@ -31,15 +31,15 @@ class UniqueUuidTest extends TestCase
         $fakerUuid = \Faker\Factory::create()->uuid();
         $inserts = [
             [$column => $fakerUuid],
-            [$column => UniqueUuid::generate($tableName, $column)],
-            [$column => UniqueUuid::generate($tableName, $column)],
-            [$column => UniqueUuid::generate($tableName, $column)],
-            [$column => UniqueUuid::generate($tableName, $column)],
+            [$column => Unique::uuid($tableName, $column)],
+            [$column => Unique::uuid($tableName, $column)],
+            [$column => Unique::uuid($tableName, $column)],
+            [$column => Unique::uuid($tableName, $column)],
         ];
 
         DB::table($tableName)->insert($inserts);
 
-        $uuid = UniqueUuid::generate($tableName, $column, $fakerUuid);
+        $uuid = Unique::uuid($tableName, $column, $fakerUuid);
 
         \Illuminate\Support\Str::isUuid($uuid);
 
