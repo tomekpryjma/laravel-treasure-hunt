@@ -45,7 +45,7 @@ Route::prefix('game')->group(function () {
     Route::post('/register', [GameController::class, 'register'])->name('game.register');
 });
 
-Route::middleware('auth')->prefix('step')->group(function () {
+Route::prefix('step')->group(function () {
     Route::post('/store/{game?}', [StepController::class, 'store'])->name('step.store');
     Route::post('/update/{step}', [StepController::class, 'update'])->name('step.update');
 });
