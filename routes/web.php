@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StepController;
 use Illuminate\Foundation\Application;
@@ -48,6 +49,10 @@ Route::prefix('game')->group(function () {
 Route::prefix('step')->group(function () {
     Route::post('/store/{game?}', [StepController::class, 'store'])->name('step.store');
     Route::post('/update/{step}', [StepController::class, 'update'])->name('step.update');
+});
+
+Route::prefix('player')->group(function () {
+    Route::get('/', [PlayerController::class, 'login']);
 });
 
 require __DIR__ . '/auth.php';
