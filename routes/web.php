@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\GameSessionController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StepController;
 use Illuminate\Foundation\Application;
@@ -43,6 +44,10 @@ Route::prefix('game')->group(function () {
 
     // TODO: payment gateway
     Route::post('/register', [GameController::class, 'register'])->name('game.register');
+});
+
+Route::prefix('game-session')->group(function () {
+    Route::get('/lobby/{sessionCode?}', [GameSessionController::class, 'lobby'])->name('game-session.lobby');
 });
 
 Route::middleware('auth')->prefix('step')->group(function () {
