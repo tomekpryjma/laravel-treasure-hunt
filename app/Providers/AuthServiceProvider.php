@@ -33,6 +33,7 @@ class AuthServiceProvider extends ServiceProvider
         Auth::viaRequest('player', function (Request $request) {
             return Player::where('email', $request->input('email'))
                 ->where('game_session_id', $request->input('game_session_id'))
+                // ->where('access_code', $request->input('access_code'))
                 ->first();
         });
     }

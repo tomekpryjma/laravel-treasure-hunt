@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('game_id')->constrained();
             $table->uuid('session_code')->unique();
-            $table->mediumInteger('access_code')->unique();
+            $table->integer('access_code')->unique();
             $table->boolean('in_progress')->default(false);
             $table->dateTime('completed_at')->nullable();
             $table->timestamps();

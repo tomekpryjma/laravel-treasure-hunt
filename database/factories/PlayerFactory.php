@@ -18,7 +18,7 @@ class PlayerFactory extends Factory
     {
         return [
             'name' => $this->faker->userName(),
-            'access_code' => $this->faker->randomNumber(6),
+            'email' => $this->faker->email(),
         ];
     }
 }

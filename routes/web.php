@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\GameController;
+use App\Http\Controllers\GameSessionController;
 use App\Http\Controllers\PlayerController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StepController;
@@ -51,8 +52,9 @@ Route::prefix('step')->group(function () {
     Route::post('/update/{step}', [StepController::class, 'update'])->name('step.update');
 });
 
-Route::prefix('player')->group(function () {
-    Route::get('/', [PlayerController::class, 'login']);
+Route::prefix('game-session')->group(function () {
+    Route::get('/', [GameSessionController::class, 'login']);
+    Route::get('/test', [GameSessionController::class, 'test'])->name('game-session.test');
 });
 
 require __DIR__ . '/auth.php';

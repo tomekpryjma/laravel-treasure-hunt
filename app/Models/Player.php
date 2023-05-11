@@ -2,17 +2,26 @@
 
 namespace App\Models;
 
+use Illuminate\Auth\Authenticatable;
+use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableInterface;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+// use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Player extends Authenticatable
+class Player extends Model implements AuthenticatableInterface
 {
-    use HasFactory;
+    use HasFactory, Authenticatable;
 
-    protected $fillable = ['email'];
+    protected $rememberTokenName = '';
+
+    protected $fillable = ['name', 'email', 'game_session_id'];
+
+    public function getAuthPassword()
+    {
+        return '';
+    }
 
     public function lobby(): HasOne
     {
