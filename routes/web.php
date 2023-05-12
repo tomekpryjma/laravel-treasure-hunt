@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\GameController;
+use App\Http\Controllers\GameSessionController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StepController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,4 +24,27 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+// Middleware handled in controller.
+Route::prefix('game')->group(function () {
+    Route::post('/store', [GameController::class, 'store'])->name('game.store');
+
+    // TODO: payment gateway
+    Route::post('/register', [GameController::class, 'register'])->name('game.register');
+});
+
+Route::prefix('game-session')->group(function () {
+    Route::get('/lobby/{sessionCode?}', [GameSessionController::class, 'lobby'])->name('game-session.lobby');
+});
+
+Route::middleware('auth')->prefix('step')->group(function () {
+    Route::post('/store/{game?}', [StepController::class, 'store'])->name('step.store');
+    Route::post('/update/{step}', [StepController::class, 'update'])->name('step.update');
+});
