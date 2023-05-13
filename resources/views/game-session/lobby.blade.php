@@ -10,7 +10,7 @@
 
 <h1>Lobby for: {{ $gameSession->game->title }}</h1>
 
-<form action="{{ route('game-session.show', ['sessionCode' => $gameSession->session_code]) }}" method="POST">
+<form action="{{ route('game-session.attempt-access', ['sessionCode' => $gameSession->session_code]) }}" method="POST">
     {{ csrf_field() }}
     <div class="form-group">
         <label for="access_code">Access code</label>
