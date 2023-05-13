@@ -43,7 +43,8 @@ Route::prefix('game')->group(function () {
 
 Route::prefix('game-session')->group(function () {
     Route::get('/lobby/{sessionCode?}', [GameSessionController::class, 'lobby'])->name('game-session.lobby');
-    Route::post('/show/{sessionCode}', [GameSessionController::class, 'show'])->name('game-session.show');
+    Route::post('/attempt-access/{sessionCode}', [GameSessionController::class, 'attemptAccess'])->name('game-session.attempt-access');
+    Route::get('/show/{sessionCode}', [GameSessionController::class, 'show'])->name('game-session.show');
 });
 
 Route::middleware('auth')->prefix('step')->group(function () {
