@@ -5,6 +5,7 @@ use App\Http\Controllers\GameSessionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StepController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -42,6 +43,7 @@ Route::prefix('game')->group(function () {
 
 Route::prefix('game-session')->group(function () {
     Route::get('/lobby/{sessionCode?}', [GameSessionController::class, 'lobby'])->name('game-session.lobby');
+    Route::post('/show/{sessionCode}', [GameSessionController::class, 'show'])->name('game-session.show');
 });
 
 Route::middleware('auth')->prefix('step')->group(function () {

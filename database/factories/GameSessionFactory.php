@@ -18,6 +18,7 @@ class GameSessionFactory extends Factory
     {
         return [
             'session_code' => $this->faker->uuid(),
+            'access_code' => $this->faker->numerify('######'),
             'in_progress' => false,
         ];
     }

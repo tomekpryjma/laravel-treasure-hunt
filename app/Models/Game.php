@@ -13,15 +13,17 @@ class Game extends Model
 
     protected $fillable = ['title'];
 
+    protected $casts = ['steps' => 'array'];
+
     public function user(): BelongsTo
     {
         return $this->belongsTo(User::class);
     }
 
-    public function steps(): HasMany
-    {
-        return $this->hasMany(Step::class);
-    }
+    // public function steps(): HasMany
+    // {
+    //     return $this->hasMany(Step::class);
+    // }
 
     public function gameSessions(): HasMany
     {
